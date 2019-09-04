@@ -1,0 +1,16 @@
+{
+  "name": "iamdevelopment/iamapi-php-sdk",
+  "description": "Client library for api2.iamstudent.at",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "High Five GmbH",
+      "email": "it@iamstudent.at"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "symfony/http-client": "^5.0@dev"
+  }
+}
