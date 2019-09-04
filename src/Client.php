@@ -90,9 +90,4 @@ class Client
 
         return $response;
     }
-
-    private function createBearerToken()
-    {
-        return 'Bearer ' . $this->token;
-    }
 }
