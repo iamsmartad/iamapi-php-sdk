@@ -2,6 +2,7 @@ Not on packagist for now. How to use in iamdevelopment/iamstudent:
 
 *  cd iamnetwork/
 *  mkdir lib
+*  cd lib
 *  git clone https://gitlab.com/iamdevelopment/iamapi-php-sdk.git
 *  cd iamapi-php-sdk
 *  composer install
