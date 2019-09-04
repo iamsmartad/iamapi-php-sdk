@@ -1,4 +1,5 @@
-Its just a protype for now. Will add basic usage with authentication later.
+Currently just a protoype. Will add basic usage with authentication later.  
+
 Not on packagist for now. How to use in iamdevelopment/iamstudent:
 
 *  cd iamnetwork/
