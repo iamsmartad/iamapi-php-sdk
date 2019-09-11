@@ -12,5 +12,10 @@
   "minimum-stability": "dev",
   "require": {
     "symfony/http-client": "^5.0@dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "Iamsmartad\\Iamapi\\SDK\\": "src/"
+    }
   }
 }
