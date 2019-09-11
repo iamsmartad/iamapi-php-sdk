@@ -1,6 +1,6 @@
 <?php
 
-namespace Iamdevelopment\Iamapi\SDK;
+namespace Iamsmartad\Iamapi\SDK;
 
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
