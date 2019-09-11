@@ -3,6 +3,7 @@
 namespace Iamdevelopment\Iamapi\SDK;
 
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
@@ -30,12 +31,12 @@ class Client
      */
     private $refreshToken;
 
-    public function __construct(string $basePath = null, string $token = null, string $refreshToken = null)
+    public function __construct(string $basePath = null, string $token = null, string $refreshToken = null, HttpClientInterface $client = null)
     {
         $this->basePath = $basePath ?? self::API_BASE_PATH;
         $this->token = $token;
         $this->refreshToken = $refreshToken;
-        $this->client = Httpclient::create();
+        $this->client = $client ?? Httpclient::create();
     }
 
     /**
@@ -48,7 +49,7 @@ class Client
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function authenticate($username, $password): ResponseInterface
+    public function login($username, $password): ResponseInterface
     {
         $body = ['username' => $username, 'password' => $password];
 
@@ -56,15 +57,12 @@ class Client
             'json' => $body
         ]);
 
-        $this->token = $response->toArray()['token'];
-        $this->refreshToken = $response->toArray()['refresh_token'];
-
         return $response;
     }
 
-    public function postVoucherFav(int $id): ResponseInterface
+    public function postVoucherFav(int $id, string $token): ResponseInterface
     {
-        $response = $this->client->request('POST', $this->basePath . '/api/v1/voucher/' . $id . '/fav', ['auth_bearer' => $this->token]);
+        $response = $this->client->request('POST', $this->basePath . '/api/v1/voucher/' . $id . '/fav', ['auth_bearer' => $token]);
 
         return $response;
     }
