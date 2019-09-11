@@ -9,7 +9,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 /**
  * Class Client
  *
- * @package Iamdevelopment\Iamapi\SDK
+ * @package Iamsmartad\Iamapi\SDK
  */
 class Client
 {
