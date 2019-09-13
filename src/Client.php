@@ -9,34 +9,38 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 /**
  * Class Client
  *
- * @package Iamsmartad\Iamapi\SDK
  */
-class Client
+final class Client implements ClientInterface
 {
-    const USER_AGENT_SUFFIX = 'iamstudent-api-php-client/';
-    const API_BASE_PATH = 'https://api2.iamstudent.at';
-
+    /**
+     * @var array
+     */
+    private $options;
     /**
      * @var array
      */
     private $basePath;
-
     /**
-     * @var string
+     * @var HttpClientInterface
      */
-    private $token;
+    private $client;
 
-    /**
-     * @var string
-     */
-    private $refreshToken;
-
-    public function __construct(string $basePath = null, string $token = null, string $refreshToken = null, HttpClientInterface $client = null)
+    public function __construct(array $options = [], string $basePath = null, HttpClientInterface $client = null)
     {
+        $this->options = array_merge(self::OPTIONS_DEFAULT, $options);
         $this->basePath = $basePath ?? self::API_BASE_PATH;
-        $this->token = $token;
-        $this->refreshToken = $refreshToken;
         $this->client = $client ?? Httpclient::create();
+    }
+
+    /**
+     * Reconfigure options provided in each request.
+     *
+     * @param array $options
+     * @param bool  $ignoreDefaults
+     */
+    public function configure(array $options, bool $ignoreDefaults = false)
+    {
+        $this->options = $ignoreDefaults ? $options : array_merge(ClientInterface::OPTIONS_DEFAULT, $options);
     }
 
     /**
@@ -49,21 +53,19 @@ class Client
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function login($username, $password): ResponseInterface
+    public function login(string $username, string $password): ResponseInterface
     {
         $body = ['username' => $username, 'password' => $password];
 
-        $response = $this->client->request('POST', $this->basePath . '/api/login_check', [
-            'json' => $body
-        ]);
+        $this->preparePayload($body);
+
+        $response = $this->client->request('POST', $this->basePath . '/api/login_check', $this->options);
 
         return $response;
     }
 
-    public function postVoucherFav(int $id, string $token): ResponseInterface
+    protected function preparePayload(array $payload)
     {
-        $response = $this->client->request('POST', $this->basePath . '/api/v1/voucher/' . $id . '/fav', ['auth_bearer' => $token]);
-
-        return $response;
+        $this->options['json'] = $payload;
     }
 }
